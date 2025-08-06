@@ -18,11 +18,17 @@ const ImageUploadComponent: React.FC<ImageUploadComponentProps> = ({ onImageUplo
 
   return (
     <div className="image-upload-container">
-      <h2>1. Upload Your Image</h2>
-      <p>Select an image file from your computer to get started.</p>
+      <h2>Upload Your Image</h2>
+      <p>Select a file from your computer to get started</p>
+
+      {/* This structure allows for a custom-styled button */}
+      <label htmlFor="file-upload" className="custom-file-upload">
+        Choose Your Image
+      </label>
       <input
+        id="file-upload"
         type="file"
-        accept="image/png, image/jpeg, image/gif" // Accepts common image formats
+        accept="image/png, image/jpeg, image/gif"
         onChange={handleFileChange}
       />
     </div>

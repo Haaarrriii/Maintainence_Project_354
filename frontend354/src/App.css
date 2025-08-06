@@ -1,53 +1,177 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+:root {
+  --bg-gradient-start: #232526;
+  --bg-gradient-end: #1a1d24;
+  --surface-color: #2c303a;
+  --primary-color: #8a42f5; /* A slightly more vibrant purple */
+  --primary-color-hover: #7b2ff0;
+  --secondary-color: #4b5563;
+  --secondary-color-hover: #374151;
+  --text-color: #f0f2f5;
+  --text-color-muted: #a0aec0;
+  --border-color: #4a5568;
+  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+/* --- FOUNDATION & GLOBAL RESET (For Full-Screen Layout) --- */
+html, body, #root, .app-container {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Ensures padding/border don't add to size */
+}
+
+body {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color); /* Fallback */
+  background-image: linear-gradient(to bottom right, var(--bg-gradient-start), var(--bg-gradient-end));
+}
+
+/* --- MAIN APP LAYOUT --- */
+.app-container {
+  display: flex;
+  flex-direction: column;
+}
+
+header.app-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+  background-color: rgba(36, 40, 49, 0.7);
+  backdrop-filter: blur(8px);
+  flex-shrink: 0;
+  position: relative;
+}
+
+header.app-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-color);
+  letter-spacing: 1px;
+}
+
+.btn-reset {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* --- MAIN CONTENT & CENTERING FIX --- */
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  overflow: hidden; /* This is okay here, it prevents the whole page from scrolling */
+}
+
+.main-content.centered {
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- UPLOAD PROMPT STYLING --- */
+.image-upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+  background-color: var(--surface-color);
+  padding: 5rem 6rem;
+  min-width: 600px;
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  box-shadow: var(--shadow-lg);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.image-upload-container h2 {
+  margin-top: 0;
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, var(--primary-color), #c37ff0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.image-upload-container p {
+  color: var(--text-color-muted);
+  font-size: 1.25rem;
+  margin-bottom: 3rem;
+  max-width: 400px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.image-upload-container input[type="file"] {
+  display: none;
 }
 
-.card {
-  padding: 2em;
+.custom-file-upload {
+  display: inline-block;
+  background: var(--primary-color);
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(123, 47, 240, 0.2);
+}
+.custom-file-upload:hover {
+  background: var(--primary-color-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(123, 47, 240, 0.4);
 }
 
-.read-the-docs {
-  color: #888;
-}
-.image-preview-container {
-  margin-top: 20px;
-  text-align: center;
+/* --- EDITOR LAYOUT --- */
+.editor-layout {
+  display: flex;
+  width: 100%;
+  /* overflow: hidden;  <-- THIS WAS THE PROBLEM. Removing it fixes the issue. */
 }
 
-.image-preview {
-  max-width: 300px;
-  max-height: 300px;
-  border: 1px solid #ccc;
-  margin-top: 10px;
+.controls-panel {
+  width: 380px;
+  flex-shrink: 0;
+  padding: 1.5rem;
+  background-color: var(--surface-color);
+  border-right: 1px solid var(--border-color);
+  overflow-y: auto; /* This allows the panel itself to scroll if needed */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
+.controls-panel h2 {
+  font-size: 1.25rem; font-weight: 600; margin: 0 0 0.5rem 0;
+  padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color);
+}
+.operation-group { border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-color); overflow: visible; /* Changed from hidden to visible */ transition: border-color 0.2s; }
+.operation-group.active { border-color: var(--primary-color); }
+.operation-group-header { padding: 0.75rem 1rem; font-weight: 500; cursor: pointer; transition: background-color 0.2s, color 0.2s; border-radius: 7px; /* Add radius to the header */ }
+.operation-group:not(.active):hover .operation-group-header { background-color: #3e4451; }
+.operation-group.active .operation-group-header { background-color: var(--primary-color); color: white; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.operation-inputs { padding: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; border-top: 1px solid var(--border-color); }
+.operation-inputs.single-input { grid-template-columns: 1fr; }
+.flip-options label { display: flex; align-items: center; gap: 0.5rem; }
+.flip-options input[type="checkbox"] { accent-color: var(--primary-color); width: 1rem; height: 1rem; }
+
+.action-buttons { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 0.75rem; }
+.btn { padding: 0.75rem 1rem; border-radius: 6px; border: none; font-size: 1rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary { background-color: var(--primary-color); color: white; }
+.btn-primary:hover:not(:disabled) { background-color: var(--primary-color-hover); }
+.btn-secondary { background-color: var(--secondary-color); color: var(--text-color); }
+.btn-secondary:hover:not(:disabled) { background-color: var(--secondary-color-hover); }
+.btn-reset { background-color: var(--secondary-color); color: var(--text-color); width: 120px; }
+
+.preview-panel { flex: 1; padding: 2rem; display: flex; justify-content: center; align-items: center; overflow: auto; }
+.image-display-area { display: flex; justify-content: center; gap: 2rem; width: 100%; }
+.image-container { text-align: center; background: rgba(36, 40, 49, 0.7); backdrop-filter: blur(10px); padding: 1rem; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: var(--shadow-lg); flex-grow: 1; flex-basis: 400px; max-width: 500px; }
+.image-container h3 { margin: 0 0 1rem 0; color: var(--text-color-muted); }
+.image-container img { width: 100%; max-height: 400px; object-fit: contain; border-radius: 8px; }
+
+input[type="text"], input[type="number"] { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); background-color: var(--surface-color); border-radius: 6px; font-size: 0.9rem; color: var(--text-color); transition: border-color 0.2s, box-shadow 0.2s; }
+input[type="text"]:focus, input[type="number"]:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(138, 66, 245, 0.3); }
+.status-bar { padding: 0.75rem; font-weight: 500; background-color: var(--primary-color); color: white;}
+.status-bar.error { background-color: #ef4444; }
